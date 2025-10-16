@@ -1,0 +1,4 @@
+resource:
+  path: "/com/example/cryptoanalyzer/"
+  fxml: "/com/example/cryptoanalyzer/fxml/"
+  image: "/com/example/cryptoanalyzer/image/"
