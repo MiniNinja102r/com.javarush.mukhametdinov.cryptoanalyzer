@@ -1,23 +1,29 @@
 package com.example.cryptoanalyzer.application;
 
+import com.example.cryptoanalyzer.service.scene.SceneManager;
+import com.example.cryptoanalyzer.service.scene.SceneType;
 import com.example.cryptoanalyzer.storage.Config;
-import com.example.cryptoanalyzer.util.AppConstants;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
 
 public final class MainMenuApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(@NotNull Stage stage) {
         Config.load();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(); //todo: scene-manager
-        Scene scene = new Scene(fxmlLoader.load(), AppConstants.APP_WIDTH, AppConstants.APP_HEIGHT);
-        stage.setTitle(AppConstants.APP_NAME);
-        stage.setScene(scene);
+        initializeManagers(stage);
+
+        SceneManager.getInstance().switchScene(SceneType.MAIN_MENU);
         stage.show();
+    }
+
+    private void initializeManagers(@NotNull Stage stage) {
+        SceneManager.initialize(stage);
+    }
+
+    @Override
+    public void stop() {
+        // unload tasks.
     }
 }
