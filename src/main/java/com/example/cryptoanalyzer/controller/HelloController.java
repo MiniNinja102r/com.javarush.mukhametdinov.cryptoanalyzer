@@ -1,4 +1,4 @@
-package com.example.cryptoanalyzer;
+package com.example.cryptoanalyzer.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -27,7 +27,7 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("com.example.cryptoanalyzer")
-    mainClass.set("com.example.cryptoanalyzer.HelloApplication")
+    mainClass.set("com.example.cryptoanalyzer.Launcher")
 }
 
 javafx {
@@ -42,6 +42,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.42")
     testCompileOnly("org.projectlombok:lombok:1.18.42")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20")
     implementation("com.github.almasb:fxgl:17.3") {
         exclude(group = "org.openjfx")
         exclude(group = "org.jetbrains.kotlin")

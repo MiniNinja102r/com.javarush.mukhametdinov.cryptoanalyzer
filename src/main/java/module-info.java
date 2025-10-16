@@ -6,4 +6,8 @@ module com.example.cryptoanalyzer {
 
     opens com.example.cryptoanalyzer to javafx.fxml;
     exports com.example.cryptoanalyzer;
+    exports com.example.cryptoanalyzer.application;
+    opens com.example.cryptoanalyzer.application to javafx.fxml;
+    exports com.example.cryptoanalyzer.controller;
+    opens com.example.cryptoanalyzer.controller to javafx.fxml;
 }
