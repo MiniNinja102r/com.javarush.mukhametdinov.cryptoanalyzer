@@ -23,8 +23,7 @@ public final class SceneManager {
     private SceneManager(Stage stage) {
         this.stage = stage;
         this.stage.setTitle(AppConstants.APP_NAME);
-        this.stage.setMinWidth(AppConstants.APP_WIDTH);
-        this.stage.setMinHeight(AppConstants.APP_HEIGHT);
+        this.stage.setResizable(false);
     }
 
     public static void initialize(@NotNull Stage stage) {
