@@ -23,6 +23,7 @@ public final class Config {
             final Yaml yaml = new Yaml();
             data = yaml.load(input);
             loadResources();
+            loadFiles();
         } catch (IOException e) {
             log.severe("Error reading resource configuration: " + e);
         }
@@ -36,7 +37,16 @@ public final class Config {
             Resource.PATH = (String) resource.get("path");
             Resource.FXML_PATH = (String) resource.get("fxml");
             Resource.IMG_PATH = (String) resource.get("image");
-            Resource.WRITE_FILE_FORMAT = (String) resource.get("write_file_format");
+        }
+    }
+
+    private static void loadFiles() {
+        final Map<String, Object> file = (Map<String, Object>) data.get("file");
+        if (file == null)
+            log.severe("File section not found in config");
+        else {
+            File.WRITE_FILE_FORMAT = (String) file.get("write_file_format");
+            File.DEFAULT_WRITE_FILE_NAME = (String) file.get("default_write_file_name");
         }
     }
 
@@ -48,6 +58,14 @@ public final class Config {
         public static String PATH;
         public static String FXML_PATH;
         public static String IMG_PATH;
+    }
+
+    public static class File {
+
+        // Подавление создания стандартного конструктора.
+        private File() {}
+
         public static String WRITE_FILE_FORMAT;
+        public static String DEFAULT_WRITE_FILE_NAME;
     }
 }

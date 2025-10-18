@@ -2,4 +2,7 @@ resource:
   path: "/com/example/cryptoanalyzer/"
   fxml: "/com/example/cryptoanalyzer/fxml/"
   image: "/com/example/cryptoanalyzer/image/"
+
+file:
   write_file_format: .txt
+  default_write_file_name: output
