@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorType {
-    FILE_ALREADY_EXISTS_ERROR("Named file already exists");
+    DATA_IS_NULL("Input data empty or null"),
+    FILE_EXISTS("File already exists");
 
     private final String description;
 }
