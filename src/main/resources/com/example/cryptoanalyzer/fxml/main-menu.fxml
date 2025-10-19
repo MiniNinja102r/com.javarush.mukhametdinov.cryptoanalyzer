@@ -6,29 +6,36 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" style="-fx-background-radius: 8;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptoanalyzer.controller.MainMenuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptoanalyzer.controller.MainMenuController">
    <children>
-      <Button fx:id="encryptButton" layoutX="478.0" layoutY="340.0" mnemonicParsing="false" onAction="#onEncryptClick" prefHeight="110.0" prefWidth="110.0" text="Шифрование" />
-      <Button fx:id="decryptButton" layoutX="478.0" layoutY="220.0" mnemonicParsing="false" onAction="#onDecryptClick" prefHeight="110.0" prefWidth="110.0" text="Расшифровка" />
-      <TextField fx:id="keyField" layoutX="85.0" layoutY="182.0" prefHeight="38.0" prefWidth="121.0" promptText="Введите ключ" style="-fx-background-radius: 8;">
+      <Button fx:id="encryptButton" layoutX="489.0" layoutY="323.0" mnemonicParsing="false" onAction="#onEncryptClick" prefHeight="110.0" prefWidth="110.0" text="Шифрование" />
+      <Button fx:id="decryptButton" layoutX="204.0" layoutY="323.0" mnemonicParsing="false" onAction="#onDecryptClick" prefHeight="110.0" prefWidth="110.0" text="Расшифровка" />
+      <TextField fx:id="keyField" layoutX="375.0" layoutY="201.0" prefHeight="38.0" prefWidth="121.0" promptText="Введите ключ" style="-fx-background-radius: 8;">
          <font>
             <Font size="14.0" />
          </font></TextField>
-      <TextField fx:id="pathField" layoutX="28.0" layoutY="109.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="38.0" prefWidth="449.0" promptText="Введите путь файла" style="-fx-background-radius: 8;" />
-      <Label layoutX="28.0" layoutY="191.0" text="Ключ:">
+      <TextField fx:id="pathField" layoutX="176.0" layoutY="144.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="38.0" prefWidth="449.0" promptText="Введите путь файла" style="-fx-background-radius: 8;" />
+      <Label layoutX="314.0" layoutY="210.0" text="Ключ:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="28.0" layoutY="253.0" text="Алфавит:">
+      <Label layoutX="314.0" layoutY="265.0" text="Алфавит:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField disable="true" layoutX="103.0" layoutY="244.0" prefHeight="38.0" prefWidth="103.0" style="-fx-background-radius: 8;" text="Русский">
+      <TextField disable="true" layoutX="393.0" layoutY="256.0" prefHeight="38.0" prefWidth="103.0" style="-fx-background-radius: 8;" text="Русский">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
+       <Label fx:id="pathNotFoundLabel" layoutX="28.0" layoutY="68.0" text="Путь к файлу не найден" textFill="RED" visible="false">
+           <font>
+               <Font name="System Bold" size="14.0" />
+           </font>
+       </Label>
+      <Button fx:id="bruteForceButton" layoutX="345.0" layoutY="323.0" mnemonicParsing="false" onAction="#onBruteForceClick" prefHeight="110.0" prefWidth="110.0" text="BruteForce" />
+      <Pane fx:id="informationPane" layoutX="176.0" layoutY="35.0" prefHeight="87.0" prefWidth="449.0" style="-fx-background-color: lightBlue; -fx-background-radius: 15;" visible="false" />
    </children>
 </Pane>
