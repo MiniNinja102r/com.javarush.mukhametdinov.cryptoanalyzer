@@ -51,8 +51,7 @@ public final class FileManager {
         }
 
         try {
-            final String fileName = Config.File.DEFAULT_WRITE_FILE_NAME + Config.File.WRITE_FILE_FORMAT;
-            Path filePath = Path.of(path + fileName);
+            final Path filePath = getFilePath(path);
             if (Files.exists(filePath)) {
                 log.warning(ErrorType.FILE_EXISTS.getDescription());
                 return false;
@@ -64,6 +63,13 @@ public final class FileManager {
             log.severe("Error, couldn't write file: " + e.getMessage());
             return false;
         }
+    }
+
+    @NotNull
+    private Path getFilePath(@NotNull String path) {
+        Path filePath = Path.of(path);
+        final String fileName = Config.File.DEFAULT_WRITE_FILE_NAME + Config.File.WRITE_FILE_FORMAT;
+        return Path.of(filePath.getParent() + "\\" + fileName);
     }
 
     private boolean writeFileData(@NotNull String content, @NotNull Path file) {
