@@ -5,11 +5,10 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 @Log
 @EqualsAndHashCode
@@ -26,14 +25,28 @@ public final class FileManager {
         return instance;
     }
 
-    public String readFile(String path) {
-        //todo: read
-        return "";
+    public Optional<String> readFile(@NotNull String path) {
+        if (path.isEmpty()) {
+            log.warning(ErrorType.DATA_IS_NULL.getDescription());
+            return Optional.empty();
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            var content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            return content.isEmpty() ? Optional.empty() : Optional.of(content.toString());
+        } catch (IOException e) {
+            log.severe("Error, couldn't read file: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
     public boolean writeFile(@NotNull String content, @NotNull String path) {
         if (path.isEmpty() || content.isEmpty()) {
-            log.severe(ErrorType.DATA_IS_NULL.getDescription());
+            log.warning(ErrorType.DATA_IS_NULL.getDescription());
             return false;
         }
 
@@ -44,6 +57,7 @@ public final class FileManager {
                 log.warning(ErrorType.FILE_EXISTS.getDescription());
                 return false;
             }
+
             final Path file = Files.createFile(filePath);
             return writeFileData(content, file);
         } catch (IOException e) {
