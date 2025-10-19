@@ -68,8 +68,14 @@ public final class FileManager {
     @NotNull
     private Path getFilePath(@NotNull String path) {
         Path filePath = Path.of(path);
-        final String fileName = Config.File.DEFAULT_WRITE_FILE_NAME + Config.File.WRITE_FILE_FORMAT;
+        final String fileName = removeExtension(filePath.getFileName().toString()) + "-" +
+                Config.File.DEFAULT_WRITE_FILE_NAME + Config.File.WRITE_FILE_FORMAT;
         return Path.of(filePath.getParent() + "\\" + fileName);
+    }
+
+    @NotNull
+    private String removeExtension(@NotNull String fileName) {
+        return fileName.lastIndexOf('.') > 0 ? fileName.substring(0, fileName.lastIndexOf('.')) : fileName;
     }
 
     private boolean writeFileData(@NotNull String content, @NotNull Path file) {
