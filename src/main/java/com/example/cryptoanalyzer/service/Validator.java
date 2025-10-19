@@ -22,7 +22,7 @@ public final class Validator {
     }
 
     public int getValidKey(int key) {
-        if (key >= AppConstants.ALPHABET_LENGTH && key <= AppConstants.ALPHABET_LENGTH)
+        if (key >= AppConstants.ALPHABET_LENGTH && key < AppConstants.ALPHABET_LENGTH)
             return key;
         return key % AppConstants.ALPHABET_LENGTH;
     }

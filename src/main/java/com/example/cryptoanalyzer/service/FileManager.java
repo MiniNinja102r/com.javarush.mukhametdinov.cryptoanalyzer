@@ -51,7 +51,7 @@ public final class FileManager {
         }
 
         try {
-            final Path filePath = getFilePath(path);
+            final Path filePath = buildOutputFilePath(path);
             if (Files.exists(filePath)) {
                 log.warning(ErrorType.FILE_EXISTS.getDescription());
                 return false;
@@ -66,7 +66,7 @@ public final class FileManager {
     }
 
     @NotNull
-    private Path getFilePath(@NotNull String path) {
+    private Path buildOutputFilePath(@NotNull String path) {
         Path filePath = Path.of(path);
         final String fileName = removeExtension(filePath.getFileName().toString()) + "-" +
                 Config.File.DEFAULT_WRITE_FILE_NAME + Config.File.WRITE_FILE_FORMAT;
