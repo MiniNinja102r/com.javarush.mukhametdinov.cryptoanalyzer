@@ -35,7 +35,7 @@ public final class Validator {
 
     public boolean isFileNotExists(@NotNull String path) {
         if (path.isEmpty())
-            return false;
+            return true;
         return Files.notExists(Path.of(path));
     }
 }
