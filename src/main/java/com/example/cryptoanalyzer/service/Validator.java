@@ -1,5 +1,6 @@
 package com.example.cryptoanalyzer.service;
 
+import com.example.cryptoanalyzer.util.AppConstants;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,10 +21,10 @@ public final class Validator {
         return instance;
     }
 
-
-    public boolean isValidKey(int key) {
-        //todo: valid key
-        return false;
+    public int getValidKey(int key) {
+        if (key >= AppConstants.ALPHABET_LENGTH && key <= AppConstants.ALPHABET_LENGTH)
+            return key;
+        return key % AppConstants.ALPHABET_LENGTH;
     }
 
     public boolean isFileExists(@NotNull String path) {
