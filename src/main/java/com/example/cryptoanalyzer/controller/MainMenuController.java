@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.nio.file.Path;
 import java.util.Optional;
 
 @Log
@@ -54,30 +54,27 @@ public final class MainMenuController {
 
     @FXML
     void onDecryptClick(ActionEvent event) {
-        String[] res = bruteForce.decrypt("абвгдеёжзиклмнопрстуфхчщщко");
-        System.out.println(Arrays.toString(res));
+        final String path = pathField.getCharacters().toString();
+        if (validator.isFileNotExists(path)) {
+            pathNotFoundLabel.setVisible(true);
+            return;
+        }
+        pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
 
-//        final String path = pathField.getCharacters().toString();
-//        if (validator.isFileNotExists(path)) {
-//            pathNotFoundLabel.setVisible(true);
-//            return;
-//        }
-//        pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
-//
-//        String content = null;
-//        Optional<String> optional = fileManager.readFile(path);
-//        if (optional.isPresent())
-//            content = optional.get();
-//
-//        if (content == null) {
-//            log.warning("Content is null");
-//            return;
-//        }
-//
-//        final String decrypted = cipher.decrypt(content, 1);
-//        if (!fileManager.writeFile(decrypted, path)) {
-//            log.warning("file not created");
-//        }
+        String text = null;
+        Optional<String> optionalText = fileManager.readFile(path);
+        if (optionalText.isPresent())
+            text = optionalText.get();
+
+        if (text == null) {
+            log.warning("Content is null");
+            return;
+        }
+
+        final String decrypted = cipher.decrypt(text, 1);
+        if (!fileManager.writeFile(decrypted, path)) {
+            log.warning("file not created");
+        }
     }
 
     @FXML
@@ -89,17 +86,17 @@ public final class MainMenuController {
         }
         pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
 
-        String content = null;
-        Optional<String> optional = fileManager.readFile(path);
-        if (optional.isPresent())
-            content = optional.get();
+        String text = null;
+        Optional<String> optionalText = fileManager.readFile(path);
+        if (optionalText.isPresent())
+            text = optionalText.get();
 
-        if (content == null) {
+        if (text == null) {
             log.warning("Content is null");
             return;
         }
 
-        final String encrypted = cipher.encrypt(content, 1);
+        final String encrypted = cipher.encrypt(text, 1);
         if (!fileManager.writeFile(encrypted, path)) {
             log.warning("file not created");
         }
@@ -107,7 +104,38 @@ public final class MainMenuController {
 
     @FXML
     void onBruteForceClick(ActionEvent event) {
-        //
+        final String path = pathField.getCharacters().toString();
+        if (validator.isFileNotExists(path)) {
+            pathNotFoundLabel.setVisible(true);
+            return;
+        }
+        pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
+
+        String text = null;
+        Optional<String> optionalText = fileManager.readFile(path);
+        if (optionalText.isPresent())
+            text = optionalText.get();
+
+        if (text == null) {
+            log.warning("Content is null");
+            return;
+        }
+
+        Path directory = null;
+        final Optional<Path> optional = fileManager.writeDirectory(path);
+        if (optional.isPresent())
+            directory = optional.get();
+
+        if (directory == null) {
+            log.warning("Directory is null");
+            return;
+        }
+
+        String[] ciphers = bruteForce.decrypt(text);
+        for (int i = 0; i < ciphers.length; i++) {
+            var line = ciphers[i];
+            fileManager.writeFile(line, directory + "\\#" + i);
+        }
     }
 
     public void initialize() {

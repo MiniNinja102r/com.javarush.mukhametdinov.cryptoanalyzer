@@ -4,20 +4,20 @@ import com.example.cryptoanalyzer.service.Validator;
 import com.example.cryptoanalyzer.util.AppConstants;
 import org.jetbrains.annotations.NotNull;
 
-public final class Cipher {
-    private static Cipher instance;
+public final class CaesarCipher {
+    private static CaesarCipher instance;
 
     @NotNull
     private final Validator validator = Validator.getInstance();
     private final String alphabet = new String(AppConstants.ALPHABET);
 
     // Подавление создания стандартного конструктора.
-    private Cipher() {}
+    private CaesarCipher() {}
 
     @NotNull
-    public static synchronized Cipher getInstance() {
+    public static synchronized CaesarCipher getInstance() {
         if (instance == null)
-            instance = new Cipher();
+            instance = new CaesarCipher();
         return instance;
     }
 
