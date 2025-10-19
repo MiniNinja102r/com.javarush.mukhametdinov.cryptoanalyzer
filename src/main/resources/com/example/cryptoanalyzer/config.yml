@@ -6,3 +6,4 @@ resource:
 file:
   write_file_format: .txt
   default_write_file_name: output
+  default_write_directory_name: directory

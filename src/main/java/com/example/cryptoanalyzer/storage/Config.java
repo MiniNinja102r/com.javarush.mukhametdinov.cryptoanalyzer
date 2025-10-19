@@ -47,6 +47,7 @@ public final class Config {
         else {
             File.WRITE_FILE_FORMAT = (String) file.get("write_file_format");
             File.DEFAULT_WRITE_FILE_NAME = (String) file.get("default_write_file_name");
+            File.DEFAULT_WRITE_DIRECTORY_NAME = (String) file.get("default_write_directory_name");
         }
     }
 
@@ -67,5 +68,6 @@ public final class Config {
 
         public static String WRITE_FILE_FORMAT;
         public static String DEFAULT_WRITE_FILE_NAME;
+        public static String DEFAULT_WRITE_DIRECTORY_NAME;
     }
 }

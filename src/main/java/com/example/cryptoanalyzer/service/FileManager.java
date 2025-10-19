@@ -44,6 +44,24 @@ public final class FileManager {
         }
     }
 
+    public Optional<Path> writeDirectory(@NotNull String path) {
+        return createDirectory(Path.of(path));
+    }
+
+    public Optional<Path> writeDirectory(@NotNull Path path) {
+        return createDirectory(path);
+    }
+
+    private Optional<Path> createDirectory(@NotNull Path path) {
+        try {
+            final Path directoryPath = Path.of(path.getParent() + "\\" + Config.File.DEFAULT_WRITE_DIRECTORY_NAME);
+            return Optional.of(Files.createDirectory(directoryPath));
+        } catch (Exception e) {
+            log.severe("Error, couldn't write directory: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
     public boolean writeFile(@NotNull String content, @NotNull String path) {
         if (path.isEmpty() || content.isEmpty()) {
             log.warning(ErrorType.DATA_IS_NULL.getDescription());
