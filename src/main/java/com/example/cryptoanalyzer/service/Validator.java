@@ -24,7 +24,7 @@ public final class Validator {
     public int getValidKey(int key) {
         if (key >= AppConstants.ALPHABET_LENGTH && key < AppConstants.ALPHABET_LENGTH)
             return key;
-        return key % AppConstants.ALPHABET_LENGTH;
+        return Math.abs(key % AppConstants.ALPHABET_LENGTH);
     }
 
     public boolean isFileExists(@NotNull String path) {

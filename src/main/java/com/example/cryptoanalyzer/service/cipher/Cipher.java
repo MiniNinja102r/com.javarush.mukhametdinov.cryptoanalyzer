@@ -23,6 +23,16 @@ public final class Cipher {
 
     @NotNull
     public String encrypt(@NotNull String text, int key) {
+        return crypt(text, key);
+    }
+
+    @NotNull
+    public String decrypt(@NotNull String encryptedText, int key) {
+        return crypt(encryptedText, -key);
+    }
+
+    @NotNull
+    private String crypt(@NotNull String text, int key) {
         StringBuilder sb = new StringBuilder();
         for (char ch: text.toCharArray()) {
             final int charIndex = alphabet.indexOf(ch);
@@ -34,10 +44,5 @@ public final class Cipher {
             sb.append(ch);
         }
         return sb.toString();
-    }
-
-    public String decrypt(@NotNull String encryptedText, int key) {
-        //TODO: Расшифровка.
-        return "";
     }
 }
