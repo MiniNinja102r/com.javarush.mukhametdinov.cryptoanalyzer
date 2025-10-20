@@ -4,38 +4,25 @@ import com.example.cryptoanalyzer.service.Validator;
 import com.example.cryptoanalyzer.util.AppConstants;
 import org.jetbrains.annotations.NotNull;
 
-public final class BruteForce {
-    private static BruteForce instance;
+public final class BruteForce extends Cipher {
 
-    @NotNull
-    private final Validator validator = Validator.getInstance();
-    private final String alphabet = new String(AppConstants.ALPHABET);
+    public BruteForce(@NotNull Validator validator, @NotNull String alphabet) {
+        super(validator, alphabet);
+    }
 
-    // Подавление создания стандартного конструктора.
-    private BruteForce() {}
+    public BruteForce(@NotNull Validator validator) {
+        super(validator, new String(AppConstants.ALPHABET));
+    }
 
-    @NotNull
-    public static synchronized BruteForce getInstance() {
-        if (instance == null)
-            instance = new BruteForce();
-        return instance;
+    public BruteForce() {
+        super(Validator.getInstance(), new String(AppConstants.ALPHABET));
     }
 
     @NotNull
     public String[] decrypt(@NotNull String encryptedText) {
         String[] buffer = new String[alphabet.length()];
         for (int key = 0; key < alphabet.length(); key++) {
-            StringBuilder sb = new StringBuilder();
-            for (char ch: encryptedText.toCharArray()) {
-                final int charIndex = alphabet.indexOf(ch);
-                if (charIndex == -1) {
-                    sb.append(ch);
-                    continue;
-                }
-                ch = alphabet.charAt(validator.getValidKey(charIndex - key));
-                sb.append(ch);
-            }
-            buffer[key] = sb.toString();
+            buffer[key] = crypt(encryptedText, -key);
         }
         return buffer;
     }

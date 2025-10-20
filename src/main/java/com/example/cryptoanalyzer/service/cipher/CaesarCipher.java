@@ -4,21 +4,18 @@ import com.example.cryptoanalyzer.service.Validator;
 import com.example.cryptoanalyzer.util.AppConstants;
 import org.jetbrains.annotations.NotNull;
 
-public final class CaesarCipher {
-    private static CaesarCipher instance;
+public final class CaesarCipher extends Cipher {
 
-    @NotNull
-    private final Validator validator = Validator.getInstance();
-    private final String alphabet = new String(AppConstants.ALPHABET);
+    public CaesarCipher(@NotNull Validator validator, @NotNull String alphabet) {
+        super(validator, alphabet);
+    }
 
-    // Подавление создания стандартного конструктора.
-    private CaesarCipher() {}
+    public CaesarCipher(@NotNull Validator validator) {
+        super(validator, new String(AppConstants.ALPHABET));
+    }
 
-    @NotNull
-    public static synchronized CaesarCipher getInstance() {
-        if (instance == null)
-            instance = new CaesarCipher();
-        return instance;
+    public CaesarCipher() {
+        super(Validator.getInstance(), new String(AppConstants.ALPHABET));
     }
 
     @NotNull
@@ -29,20 +26,5 @@ public final class CaesarCipher {
     @NotNull
     public String decrypt(@NotNull String encryptedText, int key) {
         return crypt(encryptedText, -key);
-    }
-
-    @NotNull
-    private String crypt(@NotNull String text, int key) {
-        StringBuilder sb = new StringBuilder();
-        for (char ch: text.toCharArray()) {
-            final int charIndex = alphabet.indexOf(ch);
-            if (charIndex == -1) {
-                sb.append(ch);
-                continue;
-            }
-            ch = alphabet.charAt(validator.getValidKey(charIndex + key));
-            sb.append(ch);
-        }
-        return sb.toString();
     }
 }
