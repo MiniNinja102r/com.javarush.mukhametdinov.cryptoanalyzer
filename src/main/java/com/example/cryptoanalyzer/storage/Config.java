@@ -24,6 +24,7 @@ public final class Config {
             data = yaml.load(input);
             loadResources();
             loadFiles();
+            loadMessages();
         } catch (IOException e) {
             log.severe("Error reading resource configuration: " + e);
         }
@@ -51,6 +52,20 @@ public final class Config {
         }
     }
 
+    private static void loadMessages() {
+        final Map<String, Object> message = (Map<String, Object>) data.get("message");
+        if (message == null)
+            log.severe("Message section not found in config");
+        else {
+            Message.FILE_NOT_FOUND = (String) message.get("file_not_found");
+            Message.KEY_IS_EMPTY = (String) message.get("key_is_empty");
+            Message.KEY_IS_INVALID = (String) message.get("key_is_invalid");
+            Message.CANNOT_READ = (String) message.get("cannot_read");
+            Message.CANNOT_WRITE = (String) message.get("cannot_write");
+            Message.INTERNAL_ERROR = (String) message.get("internal_error");
+        }
+    }
+
     public static class Resource {
 
         // Подавление создания стандартного конструктора.
@@ -69,5 +84,18 @@ public final class Config {
         public static String WRITE_FILE_FORMAT;
         public static String DEFAULT_WRITE_FILE_NAME;
         public static String DEFAULT_WRITE_DIRECTORY_NAME;
+    }
+
+    public static class Message {
+
+        // Подавление создания стандартного конструктора.
+        private Message() {}
+
+        public static String FILE_NOT_FOUND;
+        public static String KEY_IS_EMPTY;
+        public static String KEY_IS_INVALID;
+        public static String CANNOT_READ;
+        public static String CANNOT_WRITE;
+        public static String INTERNAL_ERROR;
     }
 }
