@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -26,10 +27,10 @@ public final class MainMenuController {
     private final FileManager fileManager = FileManager.getInstance();
 
     @NotNull
-    private final CaesarCipher cipher = CaesarCipher.getInstance();
+    private final CaesarCipher cipher = new CaesarCipher(validator);
 
     @NotNull
-    private final BruteForce bruteForce = BruteForce.getInstance();
+    private final BruteForce bruteForce = new BruteForce(validator);
 
     @FXML
     private Button bruteForceButton;
@@ -41,25 +42,28 @@ public final class MainMenuController {
     private Button encryptButton;
 
     @FXML
-    private Pane informationPane;
-
-    @FXML
     private TextField keyField;
 
     @FXML
     private TextField pathField;
 
     @FXML
-    private Label pathNotFoundLabel;
+    private Pane informationPane;
+
+    @FXML
+    private Label informationLabel;
+
+    @NotNull
+    private final InformationController infoController = new InformationController(informationPane, informationLabel);
 
     @FXML
     void onDecryptClick(ActionEvent event) {
-        final String path = pathField.getCharacters().toString();
-        if (validator.isFileNotExists(path)) {
-            pathNotFoundLabel.setVisible(true);
-            return;
-        }
-        pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
+        infoController.clearInfo();
+        final String path = pathField.getText();
+        if (!validatePathOrShowError(path)) return;
+
+        Integer key = parseKeyOrShowError(keyField.getText());
+        if (key == null) return;
 
         String text = null;
         Optional<String> optionalText = fileManager.readFile(path);
@@ -71,20 +75,20 @@ public final class MainMenuController {
             return;
         }
 
-        final String decrypted = cipher.decrypt(text, 1);
+        final String decrypted = cipher.decrypt(text, key);
         if (!fileManager.writeFile(decrypted, path)) {
-            log.warning("file not created");
+            //showError(cannot_write);
         }
     }
 
     @FXML
     void onEncryptClick(ActionEvent event) {
-        final String path = pathField.getCharacters().toString();
-        if (validator.isFileNotExists(path)) {
-            pathNotFoundLabel.setVisible(true);
-            return;
-        }
-        pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
+        infoController.clearInfo();
+        final String path = pathField.getText();
+        if (!validatePathOrShowError(path)) return;
+
+        Integer key = parseKeyOrShowError(keyField.getText());
+        if (key == null) return;
 
         String text = null;
         Optional<String> optionalText = fileManager.readFile(path);
@@ -96,7 +100,7 @@ public final class MainMenuController {
             return;
         }
 
-        final String encrypted = cipher.encrypt(text, 1);
+        final String encrypted = cipher.encrypt(text, key);
         if (!fileManager.writeFile(encrypted, path)) {
             log.warning("file not created");
         }
@@ -104,12 +108,9 @@ public final class MainMenuController {
 
     @FXML
     void onBruteForceClick(ActionEvent event) {
-        final String path = pathField.getCharacters().toString();
-        if (validator.isFileNotExists(path)) {
-            pathNotFoundLabel.setVisible(true);
-            return;
-        }
-        pathNotFoundLabel.setVisible(false); // todo: нормальное отображение ошибок.
+        infoController.clearInfo();
+        final String path = pathField.getText();
+        if (!validatePathOrShowError(path)) return;
 
         String text = null;
         Optional<String> optionalText = fileManager.readFile(path);
@@ -134,11 +135,34 @@ public final class MainMenuController {
         String[] ciphers = bruteForce.decrypt(text);
         for (int i = 0; i < ciphers.length; i++) {
             var line = ciphers[i];
-            fileManager.writeFile(line, directory + "\\#" + i);
+            fileManager.writeFile(line, directory + "\\#" + (i + 1));
         }
     }
 
-    public void initialize() {
-        pathNotFoundLabel.setVisible(false);
+    private boolean validatePathOrShowError(String path) {
+        if (path == null || path.isEmpty() || validator.isFileNotExists(path)) {
+            //showError(file_not_found);
+            return false;
+        }
+        return true;
+    }
+
+    @Nullable
+    private Integer parseKeyOrShowError(String keyText) {
+        if (keyText == null || keyText.isEmpty()) {
+            //showError(key_is_null);
+            return null;
+        }
+
+        try {
+            final int raw = Integer.parseInt(keyText.trim());
+            return validator.getValidKey(raw);
+        } catch (NumberFormatException e) {
+            //showError(key_is_empty);
+            return null;
+        } catch (Exception e) {
+            //showError(internal_error);
+            return null;
+        }
     }
 }

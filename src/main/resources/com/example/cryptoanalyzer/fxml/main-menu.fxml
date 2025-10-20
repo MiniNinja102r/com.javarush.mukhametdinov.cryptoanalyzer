@@ -30,12 +30,14 @@
             <Font size="14.0" />
          </font>
       </TextField>
-       <Label fx:id="pathNotFoundLabel" layoutX="28.0" layoutY="68.0" text="Путь к файлу не найден" textFill="RED" visible="false">
-           <font>
-               <Font name="System Bold" size="14.0" />
-           </font>
-       </Label>
       <Button fx:id="bruteForceButton" layoutX="345.0" layoutY="323.0" mnemonicParsing="false" onAction="#onBruteForceClick" prefHeight="110.0" prefWidth="110.0" text="BruteForce" />
-      <Pane fx:id="informationPane" layoutX="176.0" layoutY="35.0" prefHeight="87.0" prefWidth="449.0" style="-fx-background-color: lightBlue; -fx-background-radius: 15;" visible="false" />
+      <Pane fx:id="informationPane" layoutX="176.0" layoutY="35.0" prefHeight="87.0" prefWidth="449.0" style="-fx-background-color: lightBlue; -fx-background-radius: 15;" visible="false">
+         <children>
+             <Label fx:id="informationLabel" layoutX="14.0" layoutY="34.0" visible="false">
+                 <font>
+                     <Font name="System Bold" size="14.0" />
+                 </font>
+             </Label>
+         </children></Pane>
    </children>
 </Pane>
