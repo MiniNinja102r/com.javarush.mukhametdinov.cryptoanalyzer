@@ -15,7 +15,7 @@ public final class CaesarCipher extends Cipher {
     }
 
     public CaesarCipher() {
-        super(Validator.getInstance(), new String(AppConstants.ALPHABET));
+        super(new Validator(), new String(AppConstants.ALPHABET));
     }
 
     @NotNull

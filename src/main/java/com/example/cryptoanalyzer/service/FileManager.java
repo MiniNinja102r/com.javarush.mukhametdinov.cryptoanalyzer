@@ -27,7 +27,7 @@ public final class FileManager {
 
     public Optional<String> readFile(@NotNull String path) {
         if (path.isEmpty()) {
-            log.warning(ErrorType.DATA_IS_NULL.getDescription());
+            log.warning("Input data empty or null");
             return Optional.empty();
         }
 
@@ -64,14 +64,14 @@ public final class FileManager {
 
     public boolean writeFile(@NotNull String content, @NotNull String path) {
         if (path.isEmpty() || content.isEmpty()) {
-            log.warning(ErrorType.DATA_IS_NULL.getDescription());
+            log.warning("Input data empty or null");
             return false;
         }
 
         try {
             final Path filePath = buildOutputFilePath(path);
             if (Files.exists(filePath)) {
-                log.warning(ErrorType.FILE_EXISTS.getDescription());
+                log.warning("File already exists");
                 return false;
             }
 

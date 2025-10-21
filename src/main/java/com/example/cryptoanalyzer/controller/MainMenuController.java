@@ -18,17 +18,13 @@ import java.util.Optional;
 
 public final class MainMenuController {
     @NotNull
-    private final Validator validator = Validator.getInstance();
-
-    @NotNull
     private final FileManager fileManager = FileManager.getInstance();
 
     @NotNull
-    private final CaesarCipher cipher = new CaesarCipher(validator);
+    private final Validator validator = new Validator();
 
-    @NotNull
-    private final BruteForce bruteForce = new BruteForce(validator);
-
+    private CaesarCipher cipher;
+    private BruteForce bruteForce;
     private InformationDisplayer infoDisplayer;
 
     @FXML
@@ -45,6 +41,8 @@ public final class MainMenuController {
 
     public void initialize() {
         this.infoDisplayer = new InformationDisplayer(informationPane, informationLabel);
+        this.cipher = new CaesarCipher(validator);
+        this.bruteForce = new BruteForce(validator);
     }
 
     @FXML

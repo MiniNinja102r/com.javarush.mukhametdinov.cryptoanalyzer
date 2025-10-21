@@ -9,17 +9,6 @@ import java.nio.file.Path;
 
 @EqualsAndHashCode
 public final class Validator {
-    private static Validator instance;
-
-    // Подавление создания стандартного конструктора.
-    private Validator() {}
-
-    @NotNull
-    public static synchronized Validator getInstance() {
-        if (instance == null)
-            instance = new Validator();
-        return instance;
-    }
 
     public int getValidKey(int key) {
         int valid = key % AppConstants.ALPHABET_LENGTH;

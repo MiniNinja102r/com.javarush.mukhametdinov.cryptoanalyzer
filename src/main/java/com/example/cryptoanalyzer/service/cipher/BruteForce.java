@@ -15,7 +15,7 @@ public final class BruteForce extends Cipher {
     }
 
     public BruteForce() {
-        super(Validator.getInstance(), new String(AppConstants.ALPHABET));
+        super(new Validator(), new String(AppConstants.ALPHABET));
     }
 
     @NotNull
