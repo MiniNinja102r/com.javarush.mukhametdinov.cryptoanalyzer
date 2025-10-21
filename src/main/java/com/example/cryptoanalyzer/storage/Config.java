@@ -63,6 +63,9 @@ public final class Config {
             Message.CANNOT_READ = (String) message.get("cannot_read");
             Message.CANNOT_WRITE = (String) message.get("cannot_write");
             Message.INTERNAL_ERROR = (String) message.get("internal_error");
+            Message.SUCCESSFUL_ENCRYPTED = (String) message.get("successful_encrypted");
+            Message.SUCCESSFUL_DECRYPTED = (String) message.get("successful_decrypted");
+            Message.SUCCESS_BRUTE_FORCE= (String) message.get("successful_brute_force");
         }
     }
 
@@ -97,5 +100,8 @@ public final class Config {
         public static String CANNOT_READ;
         public static String CANNOT_WRITE;
         public static String INTERNAL_ERROR;
+        public static String SUCCESSFUL_ENCRYPTED;
+        public static String SUCCESSFUL_DECRYPTED;
+        public static String SUCCESS_BRUTE_FORCE;
     }
 }

@@ -9,9 +9,12 @@ file:
   default_write_directory_name: directory
 
 message:
-  file_not_found: Файл не найден.
-  key_is_empty: Пожалуйста, введите ключ.
-  key_is_invalid: Ключ может быть только числом.
-  cannot_read: Не удалось прочитать файл.
-  cannot_write: Не удалось записать файл.
-  internal_error: Внутренняя ошибка.
+  file_not_found: "Файл не найден."
+  key_is_empty: "Пожалуйста, введите ключ."
+  key_is_invalid: "Ключ может быть только числом."
+  cannot_read: "Не удалось прочитать файл."
+  cannot_write: "Не удалось записать файл."
+  internal_error: "Внутренняя ошибка."
+  successful_encrypted: "Файл успешно зашифрован: "
+  successful_decrypted: "Файл успешно расшифрован: "
+  successful_brute_force: "Успех! Всего расшифровок: "

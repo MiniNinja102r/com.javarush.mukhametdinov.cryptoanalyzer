@@ -86,9 +86,14 @@ public final class FileManager {
     @NotNull
     private Path buildOutputFilePath(@NotNull String path) {
         Path filePath = Path.of(path);
-        final String fileName = removeExtension(filePath.getFileName().toString()) + "-" +
+        return Path.of(filePath.getParent() + "\\" + buildFileName(path));
+    }
+
+    @NotNull
+    public String buildFileName(@NotNull String path) {
+        final String rawFileName = Path.of(path).getFileName().toString();
+        return removeExtension(rawFileName) + "-" +
                 Config.File.DEFAULT_WRITE_FILE_NAME + Config.File.WRITE_FILE_FORMAT;
-        return Path.of(filePath.getParent() + "\\" + fileName);
     }
 
     @NotNull

@@ -58,7 +58,9 @@ public final class MainMenuController {
             final String decrypted = cipher.decrypt(text, key);
             if (!fileManager.writeFile(decrypted, path)) {
                 infoDisplayer.showError(Config.Message.CANNOT_WRITE);
+                return;
             }
+            infoDisplayer.showSuccess(Config.Message.SUCCESSFUL_DECRYPTED + fileManager.buildFileName(path));
         });
     }
 
@@ -75,7 +77,9 @@ public final class MainMenuController {
             final String encrypted = cipher.encrypt(text, key);
             if (!fileManager.writeFile(encrypted, path)) {
                 infoDisplayer.showError(Config.Message.CANNOT_WRITE);
+                return;
             }
+            infoDisplayer.showSuccess(Config.Message.SUCCESSFUL_ENCRYPTED + fileManager.buildFileName(path));
         });
     }
 
@@ -93,10 +97,13 @@ public final class MainMenuController {
             }
             final Path directory = optionalDirectory.get();
             String[] ciphers = bruteForce.decrypt(text);
-            for (int i = 0; i < ciphers.length; i++) {
+
+            var length = ciphers.length;
+            for (int i = 0; i < length; i++) {
                 var line = ciphers[i];
                 fileManager.writeFile(line, directory + "\\#" + (i + 1));
             }
+            infoDisplayer.showSuccess(Config.Message.SUCCESS_BRUTE_FORCE + length);
         });
     }
 
