@@ -4,22 +4,19 @@ import com.example.cryptoanalyzer.service.FileManager;
 import com.example.cryptoanalyzer.service.Validator;
 import com.example.cryptoanalyzer.service.cipher.BruteForce;
 import com.example.cryptoanalyzer.service.cipher.CaesarCipher;
+import com.example.cryptoanalyzer.storage.Config;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Optional;
 
-@Log
 public final class MainMenuController {
-
     @NotNull
     private final Validator validator = Validator.getInstance();
 
@@ -32,14 +29,7 @@ public final class MainMenuController {
     @NotNull
     private final BruteForce bruteForce = new BruteForce(validator);
 
-    @FXML
-    private Button bruteForceButton;
-
-    @FXML
-    private Button decryptButton;
-
-    @FXML
-    private Button encryptButton;
+    private InformationDisplayer infoDisplayer;
 
     @FXML
     private TextField keyField;
@@ -53,104 +43,77 @@ public final class MainMenuController {
     @FXML
     private Label informationLabel;
 
-    @NotNull
-    private final InformationController infoController = new InformationController(informationPane, informationLabel);
+    public void initialize() {
+        this.infoDisplayer = new InformationDisplayer(informationPane, informationLabel);
+    }
 
     @FXML
     void onDecryptClick(ActionEvent event) {
-        infoController.clearInfo();
+        infoDisplayer.clearInfo();
         final String path = pathField.getText();
-        if (!validatePathOrShowError(path)) return;
+        if (isPathInvalid(path)) return;
 
         Integer key = parseKeyOrShowError(keyField.getText());
         if (key == null) return;
 
-        String text = null;
-        Optional<String> optionalText = fileManager.readFile(path);
-        if (optionalText.isPresent())
-            text = optionalText.get();
-
-        if (text == null) {
-            log.warning("Content is null");
-            return;
-        }
-
-        final String decrypted = cipher.decrypt(text, key);
-        if (!fileManager.writeFile(decrypted, path)) {
-            //showError(cannot_write);
-        }
+        readFileOrShowError(path).ifPresent(text -> {
+            final String decrypted = cipher.decrypt(text, key);
+            if (!fileManager.writeFile(decrypted, path)) {
+                infoDisplayer.showError(Config.Message.CANNOT_WRITE);
+            }
+        });
     }
 
     @FXML
     void onEncryptClick(ActionEvent event) {
-        infoController.clearInfo();
+        infoDisplayer.clearInfo();
         final String path = pathField.getText();
-        if (!validatePathOrShowError(path)) return;
+        if (isPathInvalid(path)) return;
 
         Integer key = parseKeyOrShowError(keyField.getText());
         if (key == null) return;
 
-        String text = null;
-        Optional<String> optionalText = fileManager.readFile(path);
-        if (optionalText.isPresent())
-            text = optionalText.get();
-
-        if (text == null) {
-            log.warning("Content is null");
-            return;
-        }
-
-        final String encrypted = cipher.encrypt(text, key);
-        if (!fileManager.writeFile(encrypted, path)) {
-            log.warning("file not created");
-        }
+        readFileOrShowError(path).ifPresent(text -> {
+            final String encrypted = cipher.encrypt(text, key);
+            if (!fileManager.writeFile(encrypted, path)) {
+                infoDisplayer.showError(Config.Message.CANNOT_WRITE);
+            }
+        });
     }
 
     @FXML
     void onBruteForceClick(ActionEvent event) {
-        infoController.clearInfo();
+        infoDisplayer.clearInfo();
         final String path = pathField.getText();
-        if (!validatePathOrShowError(path)) return;
+        if (isPathInvalid(path)) return;
 
-        String text = null;
-        Optional<String> optionalText = fileManager.readFile(path);
-        if (optionalText.isPresent())
-            text = optionalText.get();
-
-        if (text == null) {
-            log.warning("Content is null");
-            return;
-        }
-
-        Path directory = null;
-        final Optional<Path> optional = fileManager.writeDirectory(path);
-        if (optional.isPresent())
-            directory = optional.get();
-
-        if (directory == null) {
-            log.warning("Directory is null");
-            return;
-        }
-
-        String[] ciphers = bruteForce.decrypt(text);
-        for (int i = 0; i < ciphers.length; i++) {
-            var line = ciphers[i];
-            fileManager.writeFile(line, directory + "\\#" + (i + 1));
-        }
+        readFileOrShowError(path).ifPresent(text -> {
+            var optionalDirectory = fileManager.writeDirectory(path);
+            if (optionalDirectory.isEmpty()) {
+                infoDisplayer.showError(Config.Message.CANNOT_WRITE);
+                return;
+            }
+            final Path directory = optionalDirectory.get();
+            String[] ciphers = bruteForce.decrypt(text);
+            for (int i = 0; i < ciphers.length; i++) {
+                var line = ciphers[i];
+                fileManager.writeFile(line, directory + "\\#" + (i + 1));
+            }
+        });
     }
 
-    private boolean validatePathOrShowError(String path) {
+    private boolean isPathInvalid(String path) {
         if (path == null || path.isEmpty() || validator.isFileNotExists(path)) {
-            //showError(file_not_found);
-            return false;
+            infoDisplayer.showError(Config.Message.FILE_NOT_FOUND);
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Nullable
     private Integer parseKeyOrShowError(String keyText) {
         if (keyText == null || keyText.isEmpty()) {
-            //showError(key_is_null);
+            infoDisplayer.showError(Config.Message.KEY_IS_EMPTY);
             return null;
         }
 
@@ -158,11 +121,23 @@ public final class MainMenuController {
             final int raw = Integer.parseInt(keyText.trim());
             return validator.getValidKey(raw);
         } catch (NumberFormatException e) {
-            //showError(key_is_empty);
+            infoDisplayer.showError(Config.Message.KEY_IS_INVALID);
             return null;
         } catch (Exception e) {
-            //showError(internal_error);
+            infoDisplayer.showError(Config.Message.INTERNAL_ERROR);
             return null;
+        }
+    }
+
+    private Optional<String> readFileOrShowError(@NotNull String path) {
+        try {
+            var optionalText = fileManager.readFile(path);
+            if (optionalText.isEmpty())
+                infoDisplayer.showError(Config.Message.CANNOT_READ);
+            return optionalText;
+        } catch (Exception e) {
+            infoDisplayer.showError(Config.Message.CANNOT_READ);
+            return Optional.empty();
         }
     }
 }

@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
-public record InformationController(@NotNull Pane informationPane, @NotNull Label informationLabel) {
+public record InformationDisplayer(@NotNull Pane informationPane, @NotNull Label informationLabel) {
 
     public void clearInfo() {
         Platform.runLater(() -> {
