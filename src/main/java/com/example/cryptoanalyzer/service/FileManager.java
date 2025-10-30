@@ -1,6 +1,6 @@
 package com.example.cryptoanalyzer.service;
 
-import com.example.cryptoanalyzer.storage.Config;
+import com.example.cryptoanalyzer.config.Config;
 import lombok.EqualsAndHashCode;
 import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;

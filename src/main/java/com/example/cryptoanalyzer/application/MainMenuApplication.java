@@ -2,7 +2,7 @@ package com.example.cryptoanalyzer.application;
 
 import com.example.cryptoanalyzer.service.scene.SceneManager;
 import com.example.cryptoanalyzer.service.scene.SceneType;
-import com.example.cryptoanalyzer.storage.Config;
+import com.example.cryptoanalyzer.config.Config;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;

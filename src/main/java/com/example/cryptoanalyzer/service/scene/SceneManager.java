@@ -1,6 +1,6 @@
 package com.example.cryptoanalyzer.service.scene;
 
-import com.example.cryptoanalyzer.storage.Config;
+import com.example.cryptoanalyzer.config.Config;
 import com.example.cryptoanalyzer.util.AppConstants;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

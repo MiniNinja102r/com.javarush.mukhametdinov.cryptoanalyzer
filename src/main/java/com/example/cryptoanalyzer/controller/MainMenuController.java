@@ -4,7 +4,7 @@ import com.example.cryptoanalyzer.service.FileManager;
 import com.example.cryptoanalyzer.service.Validator;
 import com.example.cryptoanalyzer.service.cipher.BruteForce;
 import com.example.cryptoanalyzer.service.cipher.CaesarCipher;
-import com.example.cryptoanalyzer.storage.Config;
+import com.example.cryptoanalyzer.config.Config;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

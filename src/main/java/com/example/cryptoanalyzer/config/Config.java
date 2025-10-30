@@ -1,4 +1,4 @@
-package com.example.cryptoanalyzer.storage;
+package com.example.cryptoanalyzer.config;
 
 import lombok.extern.java.Log;
 import org.yaml.snakeyaml.Yaml;
